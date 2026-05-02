@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Cash MZ</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg:#080808;--c:#141414;--c2:#1e1e1e;--g:#00C853;--g2:#00E676;--gold:#FFD700;--gold2:#FFC107;--red:#FF4444;--bl:#3B82F6;--t:#fff;--t2:#888;--bdr:rgba(0,200,83,0.15)}
+html,body{height:100%;overflow:hidden;background:#000;font-family:'Outfit',sans-serif;color:var(--t)}
+#app{width:100%;max-width:430px;height:100dvh;margin:0 auto;position:relative;overflow:hidden;background:var(--bg)}
+.scr{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden}
+.scr.on{display:flex}
+
+/* LOADER */
+#L{position:absolute;inset:0;background:#000;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.lb{width:84px;height:84px;background:linear-gradient(135deg,#0a2a0a,#143314);border:2px solid var(--g);border-radius:22px;display:flex;align-items:center;justify-content:center;animation:lp 2s ease-in-out infinite}
+@keyframes lp{0%,100%{box-shadow:0 0 24px rgba(0,200,83,0.25)}50%{box-shadow:0 0 52px rgba(0,200,83,0.6)}}
+.ln{font-size:30px;font-weight:900;background:linear-gradient(135deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
+.ls{font-size:12px;color:var(--t2);height:17px;text-align:center;letter-spacing:.4px}
+.lbw{width:200px;height:3px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden}
+.lbr{height:100%;width:0%;background:linear-gradient(90deg,var(--g),var(--g2));border-radius:3px;transition:width .2s}
+.lp{font-size:11px;color:var(--g);font-weight:700;letter-spacing:2px}
+.lw{font-size:18px;font-weight:800;display:none;background:linear-gradient(135deg,#fff,var(--g));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
+.leb{background:linear-gradient(135deg,var(--g),var(--g2));color:#000;font-family:'Outfit',sans-serif;font-weight:900;font-size:16px;letter-spacing:1px;border:none;border-radius:14px;padding:14px 42px;cursor:pointer;display:none;animation:bg 1.5s ease-in-out infinite}
+@keyframes bg{0%,100%{box-shadow:0 0 16px rgba(0,200,83,0.4)}50%{box-shadow:0 0 38px rgba(0,200,83,0.8)}}
+
+/* SHARED */
+.bbk{width:33px;height:33px;background:var(--c);border:1px solid rgba(255,255,255,0.07);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.bg{width:100%;background:linear-gradient(135deg,var(--g),#00a846);color:#000;font-family:'Outfit',sans-serif;font-weight:800;font-size:15px;border:none;border-radius:12px;padding:14px;cursor:pointer}
+.bg:active{transform:scale(.98)}
+.bs{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--t);font-family:'Outfit',sans-serif;font-weight:600;font-size:14px;border-radius:12px;padding:13px;cursor:pointer}
+.fld{display:flex;flex-direction:column;gap:6px}
+.fld label{font-size:10px;color:var(--t2);font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.ir{display:flex;align-items:center;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:12px;overflow:hidden;transition:border-color .2s}
+.ir:focus-within{border-color:var(--g);box-shadow:0 0 0 3px rgba(0,200,83,0.08)}
+.ir .pre{padding:0 11px;font-size:13px;color:var(--g);font-weight:700;border-right:1px solid rgba(255,255,255,0.08)}
+.ir input,.ir select,.ir textarea{flex:1;background:none;border:none;outline:none;color:var(--t);font-family:'Outfit',sans-serif;font-size:15px;padding:12px 12px}
+.ir input::placeholder{color:rgba(255,255,255,0.22)}
+.dvd{display:flex;align-items:center;gap:10px}
+.dvd span{font-size:11px;color:var(--t2)}
+.dvd::before,.dvd::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.08)}
+.lnk{text-align:center;font-size:12px;color:var(--t2);cursor:pointer}
+.lnk b{color:var(--g)}
+.fi{animation:fi .3s ease}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+
+/* LOGIN */
+#LOGIN{background:var(--bg);align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+#LOGIN::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,200,83,0.06),transparent 60%)}
+.ac{width:100%;max-width:360px;display:flex;flex-direction:column;align-items:center;gap:22px;z-index:1}
+.alogo{display:flex;flex-direction:column;align-items:center;gap:8px}
+.abox{width:68px;height:68px;background:linear-gradient(135deg,#0a2a0a,#143314);border:2px solid var(--g);border-radius:17px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(0,200,83,0.28)}
+.aname{font-size:24px;font-weight:900;background:linear-gradient(135deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.asub{font-size:11px;color:var(--t2);letter-spacing:1.5px;text-transform:uppercase}
+.acard{width:100%;background:var(--c);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:16px}
+.acard h2{font-size:16px;font-weight:700;text-align:center}
+
+/* REGISTER */
+#REG{background:var(--bg)}
+.rh{padding:15px 15px 0;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.rh h2{font-size:16px;font-weight:700}
+.rf{padding:15px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;flex:1}
+.rf::-webkit-scrollbar{display:none}
+
+/* HOME */
+#HOME{background:var(--bg)}
+.hscr{flex:1;overflow-y:auto;padding-bottom:76px}
+.hscr::-webkit-scrollbar{display:none}
+.htop{padding:15px 15px 12px;background:var(--bg);border-bottom:1px solid rgba(255,255,255,0.04)}
+.hrow{display:flex;align-items:center;justify-content:space-between}
+.hlogo{font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nibt{width:33px;height:33px;background:var(--c);border:1px solid rgba(255,255,255,0.07);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
+.nbdg{position:absolute;top:-3px;right:-3px;width:14px;height:14px;background:var(--red);border-radius:50%;font-size:8px;font-weight:800;color:#fff;display:none;align-items:center;justify-content:center}
+.hsl{font-size:11px;color:var(--t2);margin-top:3px}
+.hero{margin:12px 12px 10px;background:linear-gradient(135deg,#0d1f0d,#162716);border:1px solid rgba(0,200,83,0.15);border-radius:17px;padding:16px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-18px;right:-18px;width:88px;height:88px;background:radial-gradient(circle,rgba(0,200,83,0.15),transparent 70%)}
+.htag{display:inline-flex;align-items:center;gap:4px;background:rgba(0,200,83,0.1);border:1px solid rgba(0,200,83,0.24);border-radius:20px;padding:3px 9px;font-size:10px;color:var(--g);font-weight:700;letter-spacing:.6px;margin-bottom:7px;text-transform:uppercase}
+.hero h2{font-size:17px;font-weight:800;line-height:1.3;margin-bottom:3px}
+.hero p{font-size:11px;color:var(--t2);line-height:1.5}
+.hsts{display:flex;gap:16px;margin-top:10px}
+.sv{font-size:17px;font-weight:800;color:var(--g)}
+.sl{font-size:9px;color:var(--t2)}
+.sh{display:flex;align-items:center;justify-content:space-between;padding:0 12px 9px}
+.sht{font-size:14px;font-weight:700}
+.cats{display:flex;gap:7px;padding:0 12px 12px;overflow-x:auto}
+.cats::-webkit-scrollbar{display:none}
+.cat{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
+.ci{width:47px;height:47px;border-radius:12px;background:var(--c);border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.cat.on .ci{background:rgba(0,200,83,0.11);border-color:var(--g);box-shadow:0 0 14px rgba(0,200,83,0.22)}
+.cl{font-size:10px;color:var(--t2);font-weight:600}
+.cat.on .cl{color:var(--g)}
+.pgrd{display:flex;flex-direction:column;gap:11px;padding:0 12px}
+.pc{background:var(--c);border:1px solid rgba(255,255,255,0.05);border-radius:15px;overflow:hidden;cursor:pointer;transition:transform .15s}
+.pc:active{transform:scale(.98)}
+.pc.ft{border-color:rgba(255,215,0,0.2);background:linear-gradient(135deg,#1a1500,#1a1a08)}
+.pt{width:100%;height:145px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.ptg{position:absolute;top:9px;left:9px;padding:3px 8px;border-radius:20px;font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;z-index:2}
+.th{background:linear-gradient(135deg,#ff4444,#ff6b6b);color:#fff}
+.tf{background:linear-gradient(135deg,var(--g),var(--g2));color:#000}
+.tr{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000}
+.tp{background:linear-gradient(135deg,#8b00ff,#a855f7);color:#fff}
+.pb{padding:12px}
+.pti{font-size:14px;font-weight:800;margin-bottom:3px;line-height:1.3}
+.pds{font-size:11px;color:var(--t2);line-height:1.5;margin-bottom:9px}
+.pft{display:flex;align-items:center;justify-content:space-between}
+.ppr{font-size:20px;font-weight:900;color:var(--g)}
+.ppr span{font-size:11px;font-weight:600;color:var(--t2)}
+.pbn{background:linear-gradient(135deg,var(--g),#00a846);color:#000;font-family:'Outfit',sans-serif;font-weight:700;font-size:11px;border:none;border-radius:9px;padding:8px 13px;cursor:pointer}
+.pc.ft .ppr{color:var(--gold)}
+.pc.ft .pbn{background:linear-gradient(135deg,var(--gold),var(--gold2))}
+
+/* THUMB BGs */
+.tv{width:100%;height:145px;display:flex;align-items:center;justify-content:center}
+.t0{background:linear-gradient(135deg,#0a1f0a,#1a3a1a)}
+.t1{background:linear-gradient(135deg,#0a0a1f,#1a1a3a)}
+.t2{background:linear-gradient(135deg,#1f0a0a,#3a1a1a)}
+.t3{background:linear-gradient(135deg,#1a0a1f,#2a1a3a)}
+.t4{background:linear-gradient(135deg,#001a1a,#002a2a)}
+.t5{background:linear-gradient(135deg,#0a0a0a,#1a1a2a)}
+.t6{background:linear-gradient(135deg,#1a0f00,#2a1a00)}
+.t7{background:linear-gradient(135deg,#0a1a1a,#001a2a)}
+
+/* DETAIL */
+#DET{background:var(--bg)}
+.dh{padding:12px;display:flex;align-items:center;gap:9px;background:rgba(8,8,8,0.93);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.04);flex-shrink:0}
+.dh span{font-size:14px;font-weight:700;flex:1}
+.ds{flex:1;overflow-y:auto;padding-bottom:86px}
+.ds::-webkit-scrollbar{display:none}
+.di{width:100%;height:190px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.dbd{padding:16px}
+.dtg{display:inline-flex;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;margin-bottom:8px}
+.dtl{font-size:21px;font-weight:900;line-height:1.2;margin-bottom:9px}
+.dpr{display:flex;align-items:baseline;gap:5px;margin-bottom:13px;padding:12px;background:rgba(0,200,83,0.07);border:1px solid rgba(0,200,83,0.15);border-radius:12px}
+.dpn{font-size:32px;font-weight:900;color:var(--g)}
+.dpl{font-size:12px;color:var(--t2)}
+.ddc{font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:16px}
+.dinc{background:var(--c);border:1px solid rgba(255,255,255,0.05);border-radius:12px;padding:13px;margin-bottom:18px}
+.dinc h3{font-size:11px;font-weight:700;color:var(--g);margin-bottom:9px;letter-spacing:1px;text-transform:uppercase}
+.ii{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.ii:last-child{border-bottom:none}
+.ic{width:16px;height:16px;background:rgba(0,200,83,0.12);border:1px solid var(--g);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.it{font-size:12px;color:var(--t);font-weight:500}
+.bbar{position:absolute;bottom:0;left:0;right:0;padding:13px;background:rgba(8,8,8,0.97);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.05)}
+.bbt{width:100%;background:linear-gradient(135deg,var(--g),var(--g2));color:#000;font-family:'Outfit',sans-serif;font-weight:900;font-size:15px;border:none;border-radius:13px;padding:15px;cursor:pointer;box-shadow:0 0 24px rgba(0,200,83,0.3);letter-spacing:.4px}
+.bbt.gd{background:linear-gradient(135deg,var(--gold),var(--gold2));box-shadow:0 0 24px rgba(255,215,0,0.3)}
+
+/* NAV */
+.bnav{height:59px;background:rgba(8,8,8,0.97);border-top:1px solid rgba(255,255,255,0.06);display:flex;backdrop-filter:blur(20px);flex-shrink:0}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:none;background:none}
+.ni svg{width:19px;height:19px;stroke:var(--t2);transition:stroke .2s}
+.ni span{font-size:9px;color:var(--t2);font-weight:600;transition:color .2s}
+.ni.on svg{stroke:var(--g)}
+.ni.on span{color:var(--g)}
+
+/* CHAT */
+#CHAT{background:var(--bg)}
+.chdr{padding:12px 15px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:9px;background:var(--c);flex-shrink:0}
+.cav{width:36px;height:36px;background:linear-gradient(135deg,var(--g),var(--g2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.cni h3{font-size:14px;font-weight:700}
+.cni p{font-size:10px;color:var(--g);font-weight:600}
+.cmsg{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:9px}
+.cmsg::-webkit-scrollbar{display:none}
+.bbl{max-width:83%;padding:10px 12px;border-radius:14px;font-size:13px;line-height:1.55;word-break:break-word}
+.bbl.u{background:linear-gradient(135deg,var(--g),#00a846);color:#000;font-weight:600;align-self:flex-end;border-bottom-right-radius:3px}
+.bbl.a{background:var(--c2);color:var(--t);align-self:flex-start;border-bottom-left-radius:3px;border:1px solid rgba(255,255,255,0.05)}
+.bbl.ty{display:flex;align-items:center;gap:4px;padding:12px 14px}
+.d{width:6px;height:6px;background:var(--g);border-radius:50%;animation:bc 1.2s ease-in-out infinite}
+.d:nth-child(2){animation-delay:.2s}.d:nth-child(3){animation-delay:.4s}
+@keyframes bc{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
+.rpv{background:rgba(0,200,83,0.07);border:1px solid rgba(0,200,83,0.17);border-radius:11px;padding:10px;margin-bottom:7px;display:none;align-items:center;gap:8px}
+.rpv img{width:42px;height:42px;object-fit:cover;border-radius:7px}
+.rpi b{font-size:12px;color:var(--g);display:block}
+.rpi p{font-size:10px;color:var(--t2)}
+.cbar{padding:9px 11px;border-top:1px solid rgba(255,255,255,0.05);background:var(--c);flex-shrink:0}
+.cbr{display:flex;gap:7px;align-items:flex-end}
+.cat2{width:35px;height:35px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.cin{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:9px 13px;color:var(--t);font-family:'Outfit',sans-serif;font-size:13px;outline:none;resize:none;max-height:76px;min-height:35px;line-height:1.4}
+.cin::placeholder{color:rgba(255,255,255,0.22)}
+.csnd{width:35px;height:35px;background:linear-gradient(135deg,var(--g),var(--g2));border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+
+/* PROFILE */
+#PROF{background:var(--bg)}
+.pscr{flex:1;overflow-y:auto;padding-bottom:76px}
+.pscr::-webkit-scrollbar{display:none}
+.phdl{padding:22px 16px 14px;text-align:center;background:linear-gradient(to bottom,#0d1f0d,var(--bg))}
+.pav{width:64px;height:64px;background:linear-gradient(135deg,var(--g),var(--g2));border-radius:17px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#000;margin:0 auto 9px}
+.pnm{font-size:16px;font-weight:800}
+.pph{font-size:12px;color:var(--g);font-weight:600;margin-top:2px}
+.pbdg{display:inline-flex;align-items:center;gap:4px;background:rgba(255,215,0,0.09);border:1px solid rgba(255,215,0,0.23);border-radius:20px;padding:3px 9px;font-size:10px;color:var(--gold);font-weight:700;margin-top:5px}
+.sg{padding:0 12px 12px}
+.sgrp{background:var(--c);border:1px solid rgba(255,255,255,0.05);border-radius:14px;overflow:hidden;margin-bottom:12px}
+.sit{display:flex;align-items:center;gap:11px;padding:13px;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:background .15s}
+.sit:last-child{border-bottom:none}
+.sit:active{background:rgba(255,255,255,0.04)}
+.sic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stx{flex:1}
+.stx h4{font-size:13px;font-weight:600}
+.stx p{font-size:11px;color:var(--t2);margin-top:1px}
+.lgbt{width:100%;background:rgba(255,68,68,0.07);border:1px solid rgba(255,68,68,0.2);color:var(--red);font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;border-radius:13px;padding:14px;cursor:pointer;margin-bottom:26px}
+
+/* ADMIN */
+#ADM{background:var(--bg)}
+.asc{flex:1;overflow-y:auto;padding-bottom:26px}
+.asc::-webkit-scrollbar{display:none}
+.ahd{padding:16px;border-bottom:1px solid rgba(255,68,68,0.15);background:linear-gradient(to right,#1a0000,var(--bg));flex-shrink:0}
+.ahd-r{display:flex;align-items:center;justify-content:space-between}
+.abg{display:inline-flex;align-items:center;gap:4px;background:rgba(255,68,68,0.11);border:1px solid rgba(255,68,68,0.28);border-radius:20px;padding:3px 9px;font-size:10px;color:var(--red);font-weight:800;letter-spacing:1px;margin-bottom:5px}
+.ahd h2{font-size:18px;font-weight:900}
+.agd{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:12px}
+.acd{background:var(--c);border:1px solid rgba(255,255,255,0.05);border-radius:13px;padding:12px;transition:all .2s}
+.acd:active{transform:scale(.97)}
+.aci{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:7px}
+.acd h3{font-size:20px;font-weight:800}
+.acd p{font-size:10px;color:var(--t2);margin-top:1px}
+.asec{padding:0 12px 12px}
+.asec h3{font-size:10px;font-weight:700;color:var(--t2);letter-spacing:1px;text-transform:uppercase;margin-bottom:9px}
+.afl{display:flex;flex-direction:column;gap:7px;background:var(--c);border:1px solid rgba(255,255,255,0.05);border-radius:12px;padding:13px;margin-bottom:12px}
+.afl label{font-size:10px;color:var(--t2);font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.ai{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:9px;padding:10px;color:var(--t);font-family:'Outfit',sans-serif;font-size:13px;outline:none;width:100%}
+.ai::placeholder{color:rgba(255,255,255,0.22)}
+.ai:focus{border-color:var(--g)}
+.bred{background:linear-gradient(135deg,var(--red),#cc0000);color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;border:none;border-radius:9px;padding:10px;cursor:pointer;width:100%}
+.bgo{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;border:none;border-radius:9px;padding:10px;cursor:pointer;width:100%}
+.ul{background:var(--c);border:1px solid rgba(255,255,255,0.05);border-radius:12px;overflow:hidden}
+.ur{display:flex;align-items:center;gap:9px;padding:11px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.ur:last-child{border-bottom:none}
+.uav{width:31px;height:31px;background:linear-gradient(135deg,#333,#222);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--t2);flex-shrink:0}
+.uif{flex:1}
+.uif h4{font-size:12px;font-weight:700}
+.uif p{font-size:10px;color:var(--t2)}
+.uac{display:flex;gap:4px}
+.ub{font-size:9px;font-family:'Outfit',sans-serif;font-weight:700;border:none;border-radius:5px;padding:4px 7px;cursor:pointer}
+.ublk{background:rgba(255,68,68,0.11);color:var(--red);border:1px solid rgba(255,68,68,0.23)}
+.upro{background:rgba(255,215,0,0.11);color:var(--gold);border:1px solid rgba(255,215,0,0.23)}
+.rr{display:flex;flex-direction:column;gap:5px;padding:11px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.rr:last-child{border-bottom:none}
+.rrt{display:flex;align-items:center;justify-content:space-between}
+.rst{font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px}
+.rsp{background:rgba(255,200,0,0.12);color:#ffc800;border:1px solid rgba(255,200,0,0.26)}
+.rsa{background:rgba(0,200,83,0.12);color:var(--g);border:1px solid rgba(0,200,83,0.26)}
+.rsr{background:rgba(255,68,68,0.12);color:var(--red);border:1px solid rgba(255,68,68,0.26)}
+.rac{display:flex;gap:5px;margin-top:5px}
+.rappr{background:rgba(0,200,83,0.12);color:var(--g);border:1px solid rgba(0,200,83,0.26);font-size:10px;font-family:'Outfit',sans-serif;font-weight:700;border-radius:7px;padding:4px 9px;cursor:pointer}
+.rrej{background:rgba(255,68,68,0.11);color:var(--red);border:1px solid rgba(255,68,68,0.23);font-size:10px;font-family:'Outfit',sans-serif;font-weight:700;border-radius:7px;padding:4px 9px;cursor:pointer}
+
+/* OVERLAYS */
+.blkov{position:fixed;inset:0;background:#000;z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:13px;padding:26px;text-align:center}
+.blkov h2{font-size:17px;font-weight:800;color:var(--red)}
+.blkov p{font-size:13px;color:var(--t2);line-height:1.6}
+.npop{position:fixed;top:12px;left:50%;transform:translateX(-50%);width:calc(100% - 24px);max-width:400px;background:var(--c);border:1px solid var(--bdr);border-radius:12px;padding:11px 13px;z-index:500;display:none;align-items:flex-start;gap:9px;box-shadow:0 8px 32px rgba(0,0,0,0.7);animation:sd .3s ease}
+@keyframes sd{from{opacity:0;transform:translateX(-50%) translateY(-14px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.npb h4{font-size:12px;font-weight:700;margin-bottom:2px}
+.npb p{font-size:11px;color:var(--t2);line-height:1.4}
+.toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%);background:var(--c2);border:1px solid var(--bdr);border-radius:28px;padding:8px 17px;font-size:12px;font-weight:600;color:var(--t);z-index:600;display:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.6)}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- BLOCKED -->
+<div class="blkov" id="blkov">
+  <div style="width:68px;height:68px;background:rgba(255,68,68,0.08);border:2px solid rgba(255,68,68,0.28);border-radius:17px;display:flex;align-items:center;justify-content:center">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+  </div>
+  <h2>Acesso Restrito</h2>
+  <p>A sua conta foi suspensa.<br>Contacte o suporte.</p>
+  <button class="bg" style="width:220px;margin-top:5px" onclick="wa('Olá, minha conta foi bloqueada no Cash MZ.')">Contactar Suporte</button>
+</div>
+
+<!-- NOTIF -->
+<div class="npop" id="npop">
+  <div style="width:31px;height:31px;background:rgba(0,200,83,0.11);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+  </div>
+  <div class="npb"><h4 id="npT"></h4><p id="npP"></p></div>
+  <svg onclick="cnf()" style="cursor:pointer;flex-shrink:0" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ══ LOADER ══ -->
+<div id="L">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+    <div class="lb">
+      <svg width="52" height="52" viewBox="0 0 100 76"><defs><linearGradient id="g0" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4CAF50"/><stop offset="100%" stop-color="#00E676"/></linearGradient></defs><text x="1" y="67" font-family="Outfit,sans-serif" font-weight="900" font-size="60" fill="url(#g0)">CZ</text></svg>
+    </div>
+    <div class="ln">Cash MZ</div>
+  </div>
+  <div class="ls" id="lSt">A iniciar CashMZ...</div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+    <div class="lbw"><div class="lbr" id="lBr"></div></div>
+    <div class="lp" id="lPc">0%</div>
+  </div>
+  <div class="lw" id="lWl">Bem-vindo ao Cash MZ 🚀</div>
+  <button class="leb" id="lEb" onclick="enterApp()">ENTRAR NO APP</button>
+</div>
+
+<!-- ══ LOGIN ══ -->
+<div class="scr" id="LOGIN">
+  <div class="ac" style="margin:auto">
+    <div class="alogo">
+      <div class="abox">
+        <svg width="42" height="42" viewBox="0 0 100 76"><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4CAF50"/><stop offset="100%" stop-color="#00E676"/></linearGradient></defs><text x="1" y="67" font-family="Outfit,sans-serif" font-weight="900" font-size="60" fill="url(#g1)">CZ</text></svg>
+      </div>
+      <div class="aname">Cash MZ</div>
+      <div class="asub">Plataforma de Rendimento Digital</div>
+    </div>
+    <div class="acard">
+      <h2>Acesse sua conta</h2>
+      <div class="fld"><label>Telefone</label><div class="ir"><div class="pre">+258</div><input type="tel" id="lPh" placeholder="8X XXX XXXX" maxlength="9"></div></div>
+      <div class="fld"><label>Senha</label><div class="ir"><input type="password" id="lPw" placeholder="••••••••" style="padding-left:14px" onkeypress="if(event.key==='Enter')doLogin()"></div></div>
+      <button class="bg" onclick="doLogin()">Entrar</button>
+      <div class="dvd"><span>ou</span></div>
+      <button class="bs" onclick="go('REG')">Criar Conta</button>
+      <div class="lnk" onclick="fgPw()">Esqueci a senha? <b>Recuperar</b></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REGISTER ══ -->
+<div class="scr" id="REG">
+  <div class="rh"><div class="bbk" onclick="go('LOGIN')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div><h2>Criar Conta</h2></div>
+  <div class="rf">
+    <div class="fld"><label>Nome Completo</label><div class="ir"><input type="text" id="rNm" placeholder="Seu nome" style="padding-left:14px"></div></div>
+    <div class="fld"><label>Telefone</label><div class="ir"><div class="pre">+258</div><input type="tel" id="rPh" placeholder="8X XXX XXXX" maxlength="9"></div></div>
+    <div class="fld"><label>Senha</label><div class="ir"><input type="password" id="rPw" placeholder="Mínimo 6 caracteres" style="padding-left:14px"></div></div>
+    <div class="fld"><label>Confirmar Senha</label><div class="ir"><input type="password" id="rPw2" placeholder="Repetir" style="padding-left:14px"></div></div>
+    <button class="bg" onclick="doReg()">Criar Conta</button>
+    <button class="bs" onclick="go('LOGIN')">Já tenho conta</button>
+  </div>
+</div>
+
+<!-- ══ HOME ══ -->
+<div class="scr" id="HOME">
+  <div class="hscr">
+    <div class="htop">
+      <div class="hrow">
+        <div class="hlogo">Cash MZ</div>
+        <div class="nibt" onclick="chkNf()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <div class="nbdg" id="nbdg">!</div>
+        </div>
+      </div>
+      <div class="hsl">Aprenda a gerar renda usando apenas o seu celular</div>
+    </div>
+    <div class="hero">
+      <div class="htag">⭐ Oportunidade Real</div>
+      <h2>Comece hoje a gerar<br>renda com o celular</h2>
+      <p>Métodos testados e aprovados para jovens moçambicanos</p>
+      <div class="hsts"><div><div class="sv">500+</div><div class="sl">Alunos</div></div><div><div class="sv">8</div><div class="sl">Packs</div></div><div><div class="sv">98%</div><div class="sl">Satisfação</div></div></div>
+    </div>
+    <div class="sh"><div class="sht">Categorias</div></div>
+    <div class="cats">
+      <div class="cat on" onclick="fCat(this,'all')"><div class="ci"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="cl">Tudo</div></div>
+      <div class="cat" onclick="fCat(this,'money')"><div class="ci"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div class="cl">Dinheiro</div></div>
+      <div class="cat" onclick="fCat(this,'megas')"><div class="ci"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2"><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M10.54 15.6a6 6 0 0 1 2.92 0"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg></div><div class="cl">Megas</div></div>
+      <div class="cat" onclick="fCat(this,'films')"><div class="ci"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg></div><div class="cl">Filmes</div></div>
+      <div class="cat" onclick="fCat(this,'ai')"><div class="ci"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><div class="cl">IA</div></div>
+      <div class="cat" onclick="fCat(this,'edit')"><div class="ci"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div class="cl">Edição</div></div>
+    </div>
+    <div class="sh"><div class="sht">Packs Disponíveis</div></div>
+    <div class="pgrd" id="pgrd"></div>
+    <div style="height:13px"></div>
+  </div>
+  <nav class="bnav">
+    <button class="ni on" onclick="nav('HOME',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Início</span></button>
+    <button class="ni" onclick="nav('CHAT',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Suporte IA</span></button>
+    <button class="ni" onclick="nav('PROF',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
+  </nav>
+</div>
+
+<!-- ══ DETAIL ══ -->
+<div class="scr" id="DET">
+  <div class="dh"><div class="bbk" onclick="back()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div><span id="dhT">Pack</span></div>
+  <div class="ds">
+    <div class="di" id="dImg"></div>
+    <div class="dbd">
+      <div class="dtg" id="dTg"></div>
+      <div class="dtl" id="dTl"></div>
+      <div class="dpr"><div class="dpn" id="dPn"></div><div class="dpl">Meticais</div></div>
+      <div class="ddc" id="dDc"></div>
+      <div class="dinc"><h3>✓ Incluído</h3><div id="dIn"></div></div>
+    </div>
+  </div>
+  <div class="bbar"><button class="bbt" id="bBt" onclick="doBuy()">COMPRAR AGORA</button></div>
+</div>
+
+<!-- ══ CHAT ══ -->
+<div class="scr" id="CHAT">
+  <div class="chdr">
+    <div class="cav">🤖</div>
+    <div class="cni"><h3>Assistente Cash MZ</h3><p>● Online • Resposta instantânea</p></div>
+  </div>
+  <div class="cmsg" id="cmsg">
+    <div class="bbl a">Olá! 👋 Sou o assistente do <b>Cash MZ</b>.<br>Posso ajudar-te com packs, pagamentos e formas de gerar renda. O que precisas?</div>
+  </div>
+  <div class="rpv" id="rpv">
+    <img id="rth" src="" alt="">
+    <div class="rpi"><b id="rfn">imagem.jpg</b><p>Toque em enviar para confirmar</p></div>
+    <svg onclick="clrRec()" style="cursor:pointer;flex-shrink:0" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </div>
+  <div class="cbar">
+    <div class="cbr">
+      <div class="cat2" onclick="document.getElementById('fInp').click()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+      </div>
+      <input type="file" id="fInp" accept="image/*" style="display:none" onchange="hFile(this)">
+      <textarea class="cin" id="cin" placeholder="Digite sua mensagem..." rows="1" onkeypress="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sChat()}" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+      <button class="csnd" onclick="sChat()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROFILE ══ -->
+<div class="scr" id="PROF">
+  <div class="pscr">
+    <div class="phdl">
+      <div class="pav" id="pAv">U</div>
+      <div class="pnm" id="pNm">Utilizador</div>
+      <div class="pph" id="pPh">+258 —</div>
+      <div class="pbdg">⭐ Membro Cash MZ</div>
+    </div>
+    <div class="sg">
+      <div class="sgrp">
+        <div class="sit" onclick="toast('Em breve: histórico de compras')">
+          <div class="sic" style="background:rgba(0,200,83,0.08)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+          <div class="stx"><h4>Minhas Compras</h4><p>Histórico de packs</p></div>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sit" onclick="nav('CHAT',null)">
+          <div class="sic" style="background:rgba(59,130,246,0.08)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--bl)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div class="stx"><h4>Suporte IA</h4><p>Chat com o assistente</p></div>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="sit" onclick="wa('Olá, preciso de ajuda com minha conta Cash MZ.')">
+          <div class="sic" style="background:rgba(0,200,83,0.08)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.08 6.08l.96-.96a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div class="stx"><h4>WhatsApp Suporte</h4><p>Falar com a equipa</p></div>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+      <div class="sgrp" id="admMn" style="display:none">
+        <div class="sit" onclick="openAdm()">
+          <div class="sic" style="background:rgba(255,68,68,0.08)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div class="stx"><h4 style="color:var(--red)">Painel Admin</h4><p>Gestão do sistema</p></div>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+      <button class="lgbt" onclick="doLogout()">Terminar Sessão</button>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="nav('HOME',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Início</span></button>
+    <button class="ni" onclick="nav('CHAT',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Suporte IA</span></button>
+    <button class="ni on" onclick="nav('PROF',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
+  </nav>
+</div>
+
+<!-- ══ ADMIN ══ -->
+<div class="scr" id="ADM">
+  <div class="ahd">
+    <div class="ahd-r">
+      <div><div class="abg" id="aBdg">🔴 SUPER ADMIN</div><h2>Painel de Controle</h2></div>
+      <div class="bbk" onclick="go('PROF')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
+    </div>
+  </div>
+  <div class="asc">
+    <div class="agd">
+      <div class="acd"><div class="aci" style="background:rgba(0,200,83,0.08)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h3 id="sU">0</h3><p>Utilizadores</p></div>
+      <div class="acd"><div class="aci" style="background:rgba(255,215,0,0.08)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3 id="sA">0</h3><p>Admins</p></div>
+      <div class="acd"><div class="aci" style="background:rgba(255,68,68,0.08)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div><h3 id="sB">0</h3><p>Bloqueados</p></div>
+      <div class="acd"><div class="aci" style="background:rgba(59,130,246,0.08)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--bl)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><h3 id="sR">0</h3><p>Comprovantes</p></div>
+    </div>
+    <div class="asec"><h3>Comprovantes</h3><div class="ul" id="aRl"><div style="padding:13px;text-align:center;font-size:12px;color:var(--t2)">Nenhum comprovante</div></div></div>
+    <div class="asec" id="aProW"><h3>Promover ADM</h3><div class="afl"><label>Número</label><input class="ai" id="promN" placeholder="8XXXXXXXX" type="tel"><button class="bgo" onclick="doProm()">Promover</button></div></div>
+    <div class="asec" id="aBlkW"><h3>Bloquear / Desbloquear</h3><div class="afl"><label>Número</label><input class="ai" id="blkN" placeholder="8XXXXXXXX" type="tel"><div style="display:flex;gap:7px"><button class="bred" style="flex:1" onclick="doBlk(true)">Bloquear</button><button class="bg" style="flex:1;font-size:13px;padding:10px" onclick="doBlk(false)">Desbloquear</button></div></div></div>
+    <div class="asec"><h3>Mensagens</h3>
+      <div class="afl">
+        <label>Tipo</label>
+        <div class="ir" style="border-radius:9px"><select class="ai" id="msgTp" style="background:transparent;color:#fff;border:none;padding:10px 12px" onchange="document.getElementById('msgTW').style.display=this.value==='i'?'block':'none'"><option value="g" style="background:#141414">Global (todos)</option><option value="i" style="background:#141414">Individual</option></select></div>
+        <div id="msgTW" style="display:none"><label style="margin-top:5px">Número</label><input class="ai" id="msgTg" placeholder="8XXXXXXXX" type="tel" style="margin-top:5px"></div>
+        <label>Mensagem</label>
+        <textarea class="ai" id="msgTx" rows="3" placeholder="Escreva a mensagem..." style="resize:none"></textarea>
+        <button class="bg" style="font-size:13px;padding:11px" onclick="doMsg()">Enviar</button>
+      </div>
+    </div>
+    <div class="asec"><h3>Utilizadores</h3><div class="ul" id="aUl"><div style="padding:13px;text-align:center;font-size:12px;color:var(--t2)">Nenhum utilizador</div></div></div>
+    <div class="asec" id="aLgW"><h3>Log de Ações</h3><div class="ul" id="aLg"><div style="padding:13px;text-align:center;font-size:12px;color:var(--t2)">Sem ações</div></div></div>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<script>
+// ══════════════════════════════════════
+// CONSTANTES
+// ══════════════════════════════════════
+const SUPER = '841960928';
+const WA_NUM = '258841960928';
+
+// ══════════════════════════════════════
+// BANCO DE DADOS LOCAL (persiste em localStorage)
+// ══════════════════════════════════════
+const DB = {
+  // users: { phone -> userData }
+  getAll(){ return JSON.parse(localStorage.getItem('cmz_u')||'{}'); },
+  save(o){ localStorage.setItem('cmz_u',JSON.stringify(o)); },
+  get(p){ return this.getAll()[n(p)]||null; },
+  set(p,d){ const a=this.getAll(); a[n(p)]={...(a[n(p)]||{}),...d}; this.save(a); },
+  // sessão
+  getSess(){ return localStorage.getItem('cmz_s')||null; },
+  setSess(p){ localStorage.setItem('cmz_s',n(p)); },
+  clrSess(){ localStorage.removeItem('cmz_s'); },
+  // comprovantes
+  getRecs(){ return JSON.parse(localStorage.getItem('cmz_r')||'[]'); },
+  addRec(r){ const a=this.getRecs(); a.unshift(r); localStorage.setItem('cmz_r',JSON.stringify(a)); },
+  updRec(id,upd){ const a=this.getRecs(); const i=a.findIndex(x=>x.id===id); if(i>=0){ a[i]={...a[i],...upd}; localStorage.setItem('cmz_r',JSON.stringify(a)); } },
+  // notifs por utilizador
+  getNfs(p){ return JSON.parse(localStorage.getItem('cmz_nf_'+n(p))||'[]'); },
+  addNf(p,nf){ const a=this.getNfs(p); a.unshift(nf); localStorage.setItem('cmz_nf_'+n(p),JSON.stringify(a)); },
+  clrNfs(p){ localStorage.removeItem('cmz_nf_'+n(p)); },
+  // log
+  getLog(){ return JSON.parse(localStorage.getItem('cmz_lg')||'[]'); },
+  addLog(e){ const a=this.getLog(); a.unshift({...e,ts:Date.now()}); localStorage.setItem('cmz_lg',JSON.stringify(a.slice(0,300))); }
+};
+
+// ══════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════
+const n = p => String(p||'').replace(/\D/g,'').replace(/^258/,'');
+const isAdm = p => { const u=DB.get(p); return n(p)===SUPER||(u&&(u.role==='admin'||u.role==='superadmin')); };
+const isSuper = p => n(p)===SUPER;
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+
+// ══════════════════════════════════════
+// ESTADO
+// ══════════════════════════════════════
+let CU = null;      // utilizador atual
+let prevS = null;   // tela anterior
+let curPk = 0;      // pack selecionado
+let chatH = [];     // histórico do chat (para contexto)
+let pFile = null, pFileURL = null; // ficheiro pendente
+
+// ══════════════════════════════════════
+// PACKS
+// ══════════════════════════════════════
+const PACKS = [
+  {id:'p1',ti:'Fazer 1000MT com Celular',pr:250,tg:'🔥 Mais Vendido',tc:'th',cat:'money',ft:false,
+   ds:'Estratégias reais e práticas para gerar renda usando apenas o celular. Desenvolvido para jovens moçambicanos que desejam começar mesmo sem investimento alto. Métodos testados, passo a passo completo.',
+   inc:['Passo a passo completo e detalhado','Estratégias testadas e aprovadas','Métodos reais de monetização','Dicas práticas de implementação','Suporte via WhatsApp']},
+  {id:'p2',ti:'Vender Megas',pr:50,tg:'⚡ Lucro Rápido',tc:'tf',cat:'megas',ft:false,
+   ds:'Guia prático para começar a revender dados móveis com lucro imediato. Tabela de preços atualizada e estratégias para escalar do zero.',
+   inc:['Tabela completa de preços e margens','Como captar os primeiros clientes','Script de vendas pronto','Como escalar o negócio','Lucro médio: +40% por venda']},
+  {id:'p3',ti:'Vender Filmes',pr:100,tg:'⭐ Recomendado',tc:'tr',cat:'films',ft:false,
+   ds:'Aprende a vender conteúdos digitais diretamente do celular. Do catálogo à entrega automática, tudo que precisas para um negócio lucrativo.',
+   inc:['Organização do catálogo digital','Canais de distribuição eficazes','Estratégias de precificação','Como automatizar a entrega','Marketing para atrair clientes']},
+  {id:'p4',ti:'Sistema Completo de Venda de Filmes',pr:350,tg:'👑 Premium',tc:'tp',cat:'films',ft:true,
+   ds:'O pack mais completo do Cash MZ. Inclui guia de vendas E aplicativo pronto para usar imediatamente. Tudo num só lugar: sistema, estratégia e suporte total.',
+   inc:['Guia completo de vendas','App pronto para instalar','Suporte técnico personalizado','Atualizações incluídas','Comunidade exclusiva de vendedores']},
+  {id:'p5',ti:'Vender Imagens com IA',pr:50,tg:'🤖 Inovação',tc:'tf',cat:'ai',ft:false,
+   ds:'Cria imagens impressionantes com inteligência artificial e monetiza no mercado digital. Não precisas de experiência em design para começar.',
+   inc:['Melhores ferramentas de IA gratuitas','Técnicas de prompt avançadas','Plataformas para monetizar','Como precificar o trabalho','Primeiras vendas em dias']},
+  {id:'p6',ti:'Edição Básica de Vídeo',pr:50,tg:'✂️ Edição',tc:'tf',cat:'edit',ft:false,
+   ds:'Edição de vídeo profissional usando apenas o celular. Perfeito para iniciantes que querem produzir conteúdo de qualidade.',
+   inc:['Apps gratuitos de edição','Técnicas de corte e montagem','Música e efeitos','Exportação em alta qualidade','Exemplos práticos']},
+  {id:'p7',ti:'Edição Profissional de Vídeo',pr:500,tg:'🎬 Pro',tc:'tp',cat:'edit',ft:true,
+   ds:'Técnicas cinematográficas avançadas para produzir conteúdo de alto valor. Color grading, efeitos especiais, transições profissionais.',
+   inc:['Color grading profissional','Efeitos especiais avançados','Transições cinematográficas','Edição de áudio premium','Portfolio profissional']},
+  {id:'p8',ti:'Vender Serviços de Edição',pr:350,tg:'💰 Negócio',tc:'tr',cat:'edit',ft:false,
+   ds:'Transforma as tuas habilidades em negócio lucrativo. Encontra clientes, define preços e constrói carteira recorrente.',
+   inc:['Como encontrar clientes','Tabela de preços para serviços','Contratos e gestão de projetos','Portfólio que atrai clientes','Estratégias de fidelização']}
+];
+
+const TBGS = ['t0','t1','t2','t3','t4','t5','t6','t7'];
+const SVGS = [
+  `<svg viewBox="0 0 200 120" width="82%" style="max-height:115px"><rect x="20" y="22" width="70" height="44" rx="7" fill="rgba(0,200,83,.15)" stroke="rgba(0,200,83,.4)" stroke-width="1"/><text x="55" y="48" text-anchor="middle" font-family="Outfit" font-weight="900" font-size="15" fill="#00C853">1000</text><text x="55" y="59" text-anchor="middle" font-family="Outfit" font-size="8" fill="#666">METICAIS</text><circle cx="145" cy="44" r="23" fill="rgba(0,200,83,.1)" stroke="#00C853" stroke-width="1.5"/><text x="145" y="49" text-anchor="middle" font-family="Outfit" font-weight="900" font-size="11" fill="#00E676">MT</text><line x1="30" y1="80" x2="170" y2="80" stroke="rgba(0,200,83,.2)" stroke-width="1"/><circle cx="52" cy="94" r="6" fill="rgba(0,200,83,.15)" stroke="#00C853" stroke-width="1"/><circle cx="76" cy="94" r="6" fill="rgba(0,200,83,.15)" stroke="#00C853" stroke-width="1"/><circle cx="100" cy="94" r="6" fill="rgba(0,200,83,.15)" stroke="#00C853" stroke-width="1"/><circle cx="124" cy="94" r="6" fill="rgba(0,200,83,.3)" stroke="#00C853" stroke-width="1.5"/><circle cx="148" cy="94" r="6" fill="rgba(0,200,83,.3)" stroke="#00C853" stroke-width="1.5"/></svg>`,
+  `<svg viewBox="0 0 200 120" width="82%" style="max-height:115px"><rect x="8" y="8" width="184" height="104" rx="7" fill="rgba(30,30,80,.5)" stroke="rgba(100,100,255,.3)" stroke-width="1"/><rect x="15" y="15" width="170" height="13" rx="3" fill="rgba(100,100,255,.2)"/><text x="100" y="25" text-anchor="middle" font-family="Outfit" font-weight="700" font-size="7.5" fill="#8888FF">TABELA DE PREÇOS — MEGAS</text><text x="20" y="41" font-family="Outfit" font-weight="700" font-size="7" fill="#aaa">DIÁRIO</text><text x="20" y="52" font-family="Outfit" font-size="7" fill="#ddd">1GB=25MT  2GB=50MT  6GB=100MT</text><text x="107" y="41" font-family="Outfit" font-weight="700" font-size="7" fill="#aaa">SEMANAL</text><text x="107" y="52" font-family="Outfit" font-size="7" fill="#ddd">1GB=45MT  2GB=90MT  5GB=200MT</text><rect x="15" y="62" width="170" height="36" rx="5" fill="rgba(100,100,255,.1)" stroke="rgba(100,100,255,.3)" stroke-width=".5"/><text x="100" y="80" text-anchor="middle" font-family="Outfit" font-weight="700" font-size="8" fill="#8888FF">Lucro médio: +40% por venda ✓</text></svg>`,
+  `<svg viewBox="0 0 200 120" width="82%" style="max-height:115px"><rect x="8" y="12" width="88" height="60" rx="6" fill="rgba(180,30,30,.2)" stroke="rgba(255,60,60,.3)" stroke-width="1"/><rect x="13" y="17" width="78" height="50" rx="4" fill="rgba(0,0,0,.4)"/><circle cx="52" cy="42" r="13" fill="rgba(255,60,60,.2)" stroke="rgba(255,60,60,.5)" stroke-width="1.5"/><polygon points="47,35 62,42 47,49" fill="#FF4444"/><rect x="108" y="10" width="78" height="29" rx="5" fill="rgba(180,30,30,.15)" stroke="rgba(255,60,60,.25)" stroke-width="1"/><rect x="108" y="44" width="78" height="29" rx="5" fill="rgba(180,30,30,.15)" stroke="rgba(255,60,60,.25)" stroke-width="1"/><rect x="108" y="78" width="78" height="28" rx="5" fill="rgba(0,200,83,.1)" stroke="rgba(0,200,83,.3)" stroke-width="1"/><text x="147" y="96" text-anchor="middle" font-family="Outfit" font-weight="700" font-size="7" fill="#00C853">+ Comprar acesso</text></svg>`,
+  `<svg viewBox="0 0 200 120" width="82%" style="max-height:115px"><rect x="5" y="5" width="190" height="110" rx="9" fill="rgba(139,0,255,.05)" stroke="rgba(168,85,247,.3)" stroke-width="1"/><rect x="13" y="13" width="113" height="66" rx="7" fill="rgba(0,0,0,.5)" stroke="rgba(168,85,247,.2)" stroke-width="1"/><rect x="13" y="13" width="113" height="16" rx="7" fill="rgba(168,85,247,.3)"/><text x="69" y="25" text-anchor="middle" font-family="Outfit" font-weight="700" font-size="8" fill="#E0B4FF">SISTEMA COMPLETO</text><rect x="18" y="33" width="44" height="8" rx="3" fill="rgba(255,255,255,.08)"/><rect x="68" y="33" width="44" height="8" rx="3" fill="rgba(255,255,255,.08)"/><rect x="18" y="45" width="44" height="8" rx="3" fill="rgba(168,85,247,.2)"/><rect x="68" y="45" width="44" height="8" rx="3" fill="rgba(168,85,247,.2)"/><rect x="18" y="57" width="44" height="8" rx="3" fill="rgba(255,255,255,.08)"/><rect x="68" y="57" width="44" height="8" rx="3" fill="rgba(255,255,255,.08)"/><rect x="136" y="13" width="52" height="66" rx="7" fill="rgba(0,0,0,.6)" stroke="rgba(255,215,0,.3)" stroke-width="1"/><circle cx="162" cy="35" r="13" fill="rgba(255,215,0,.15)" stroke="rgba(255,215,0,.5)" stroke-width="1.5"/><text x="162" y="40" text-anchor="middle" font-family="Outfit" font-weight="900" font-size="9" fill="#FFD700">MT</text><text x="162" y="57" text-anchor="middle" font-family="Outfit" font-weight="900" font-size="10" fill="#FFD700">350</text><rect x="13" y="86" width="179" height="16" rx="5" fill="rgba(255,215,0,.08)" stroke="rgba(255,215,0,.22)" stroke-width=".5"/><text x="102" y="98" text-anchor="middle" font-family="Outfit" font-weight="700" font-size="7" fill="#FFD700">✓ App incluso + Suporte total</text></svg>`,
+  `<svg viewBox="0 0 200 120" width="82%" style="max-height:115px"><defs><radialGradient id="ag"><stop offset="0%" stop-color="rgba(0,200,200,.4)"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><ellipse cx="100" cy="58" rx="60" ry="42" fill="url(#ag)"/><circle cx="100" cy="48" r="18" fill="rgba(0,200,200,.1)" stroke="rgba(0,255,200,.4)" stroke-width="1.5"/><circle cx="100" cy="48" r="9" fill="rgba(0,200,200,.2)" stroke="rgba(0,255,200,.6)" stroke-width="1"/><circle cx="100" cy="48" r="3.5" fill="rgba(0,255,200,.8)"/><line x1="100" y1="30" x2="100" y2="23" stroke="rgba(0,255,200,.5)" stroke-width="1"/><line x1="114" y1="40" x2="120" y2="36" stroke="rgba(0,255,200,.5)" stroke-width="1"/><line x1="114" y1="56" x2="120" y2="61" stroke="rgba(0,255,200,.5)" stroke-width="1"/><rect x="12" y="83" width="47" height="24" rx="5" fill="rgba(0,200,200,.1)" stroke="rgba(0,255,200,.3)" stroke-width="1"/><rect x="71" y="88" width="47" height="18" rx="5" fill="rgba(0,200,200,.15)" stroke="rgba(0,255,200,.4)" stroke-width="1"/><rect x="138" y="83" width="47" height="24" rx="5" fill="rgba(0,200,200,.1)" stroke="rgba(0,255,200,.3)" stroke-width="1"/><text x="35" y="100" text-anchor="middle" font-family="Outfit" font-size="7" fill="#00FFCC">Arte</text><text x="94" y="101" text-anchor="middle" font-family="Outfit" font-size="7" fill="#00FFCC">Retratos</text><text x="161" y="100" text-anchor="middle" font-family="Outfit" font-size="7" fill="#00FFCC">Logos</text></svg>`,
+  `<svg viewBox="0 0 200 120" width="82%" style="max-height:115px"><rect x="8" y="18" width="184" height="84" rx="7" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.1)" stroke-width="1"/><rect x="8" y="18" width="184" height="17" rx="7" fill="rgba(255,255,255,.06)"/><circle cx="21" cy="27" r="4" fill="rgba(255,68,68,.7)"/><circle cx="34" cy="27" r="4" fill="rgba(255,215,0,.7)"/><circle cx="47" cy="27" r="4" fill="rgba(0,200,83,.7)"/><rect x="14" y="43" width="44" height="52" rx="4" fill="rgba(100,100,150,.2)" stroke="rgba(255,255,255,.1)" stroke-width=".5"/><rect x="64" y="43" width="44" height="52" rx="4" fill="rgba(100,150,100,.2)" stroke="rgba(255,255,255,.1)" stroke-width=".5"/><rect x="114" y="43" width="68" height="24" rx="4" fill="rgba(150,100,100,.2)" stroke="rgba(255,255,255,.1)" stroke-width=".5"/><rect x="114" y="71" width="68" height="24" rx="4" fill="rgba(100,100,200,.2)" stroke="rgba(255,255,255,.1)" stroke-width=".5"/><rect x="14" y="99" width="170" height="5" rx="2" fill="rgba(255,255,255,.05)"/><rect x="14" y="99" width="72" height="5" rx="2" fill="rgba(0,200,83,.4)"/></svg>`,
+  `<svg viewBox="0 0 200 120" width="82%" style="max-height:115px"><rect x="5" y="7" width="190" height="106" rx="7" fill="rgba(40,20,0,.6)" stroke="rgba(255,140,0,.2)" stroke-width="1"/><rect x="5" y="7" width="190" height="21" rx="7" fill="rgba(255,140,0,.15)"/><text x="100" y="21" text-anchor="middle" font-family="Outfit" font-weight="700" font-size="8" fill="#FFA000">LINHA DO TEMPO — EDIÇÃO PRO</text><rect x="9" y="33" width="182" height="11" rx="3" fill="rgba(255,100,0,.2)" stroke="rgba(255,100,0,.4)" stroke-width=".5"/><rect x="9" y="33" width="70" height="11" rx="3" fill="rgba(255,100,0,.5)"/><rect x="83" y="33" width="53" height="11" rx="3" fill="rgba(255,140,0,.5)"/><rect x="9" y="48" width="182" height="11" rx="3" fill="rgba(0,150,255,.2)" stroke="rgba(0,150,255,.3)" stroke-width=".5"/><rect x="9" y="48" width="106" height="11" rx="3" fill="rgba(0,150,255,.4)"/><rect x="119" y="48" width="72" height="11" rx="3" fill="rgba(0,200,255,.4)"/><rect x="9" y="63" width="182" height="11" rx="3" fill="rgba(0,200,83,.2)" stroke="rgba(0,200,83,.3)" stroke-width=".5"/><rect x="18" y="63" width="78" height="11" rx="3" fill="rgba(0,200,83,.4)"/><rect x="9" y="81" width="182" height="26" rx="5" fill="rgba(255,140,0,.06)" stroke="rgba(255,140,0,.2)" stroke-width=".5"/><text x="100" y="97" text-anchor="middle" font-family="Outfit" font-weight="700" font-size="7" fill="#FFA000">4K · Color Grade · Efeitos · CINEMATIC</text></svg>`,
+  `<svg viewBox="0 0 200 120" width="82%" style="max-height:115px"><rect x="8" y="15" width="82" height="82" rx="7" fill="rgba(0,100,150,.2)" stroke="rgba(0,150,200,.3)" stroke-width="1"/><circle cx="49" cy="49" r="18" fill="rgba(0,150,200,.1)" stroke="rgba(0,200,255,.4)" stroke-width="1.5"/><rect x="41" y="41" width="16" height="12" rx="2" fill="rgba(0,200,255,.3)"/><polygon points="49,37 61,49 37,49" fill="rgba(0,200,255,.6)"/><text x="49" y="79" text-anchor="middle" font-family="Outfit" font-size="7" fill="#aaa">Editor</text><rect x="110" y="15" width="82" height="82" rx="7" fill="rgba(0,150,0,.2)" stroke="rgba(0,200,83,.3)" stroke-width="1"/><circle cx="151" cy="49" r="16" fill="rgba(0,200,83,.15)" stroke="rgba(0,200,83,.5)" stroke-width="1.5"/><text x="151" y="54" text-anchor="middle" font-family="Outfit" font-weight="900" font-size="11" fill="#00C853">MT</text><text x="151" y="79" text-anchor="middle" font-family="Outfit" font-size="7" fill="#aaa">Cliente</text><rect x="82" y="103" width="36" height="12" rx="4" fill="rgba(0,200,83,.18)" stroke="rgba(0,200,83,.35)" stroke-width=".5"/><text x="100" y="113" text-anchor="middle" font-family="Outfit" font-weight="700" font-size="7" fill="#00C853">PAGO ✓</text></svg>`
+];
+
+// ══════════════════════════════════════
+// RENDER PACKS
+// ══════════════════════════════════════
+function renderPacks(){
+  const g=document.getElementById('pgrd');
+  g.innerHTML=PACKS.map((p,i)=>`
+    <div class="pc${p.ft?' ft':''}" data-cat="${p.cat}" onclick="openDet(${i})">
+      <div class="pt tv ${TBGS[i]}">
+        <div class="ptg ${p.tc}">${p.tg}</div>${SVGS[i]}
+      </div>
+      <div class="pb">
+        <div class="pti">${p.ti}</div>
+        <div class="pds">${p.ds.slice(0,76)}…</div>
+        <div class="pft">
+          <div class="ppr">${p.pr}<span>MT</span></div>
+          <button class="pbn" onclick="event.stopPropagation();openDet(${i})">Ver detalhes</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function fCat(c,cat){
+  document.querySelectorAll('.cat').forEach(x=>x.classList.remove('on'));
+  c.classList.add('on');
+  document.querySelectorAll('.pc').forEach(x=>{x.style.display=(cat==='all'||x.dataset.cat===cat)?'block':'none';});
+}
+
+function openDet(i){
+  const p=PACKS[i]; if(!p) return;
+  curPk=i; prevS='HOME';
+  document.getElementById('dhT').textContent=p.ti;
+  document.getElementById('dTg').textContent=p.tg;
+  document.getElementById('dTg').className='dtg '+p.tc;
+  document.getElementById('dTl').textContent=p.ti;
+  document.getElementById('dPn').textContent=p.pr;
+  document.getElementById('dDc').innerHTML=p.ds.replace(/\n/g,'<br>');
+  document.getElementById('dIn').innerHTML=p.inc.map(x=>`<div class="ii"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2.5" width="9" height="9"><polyline points="20 6 9 17 4 12"/></svg></div><div class="it">${x}</div></div>`).join('');
+  document.getElementById('dImg').innerHTML=`<div class="tv ${TBGS[i]}" style="width:100%;height:190px">${SVGS[i]}</div>`;
+  document.getElementById('bBt').className='bbt'+(p.ft?' gd':'');
+  go('DET');
+}
+
+function doBuy(){
+  const p=PACKS[curPk]; if(!p) return;
+  const msg=`Olá! Quero comprar o pack *"${p.ti}"* — ${p.pr}MT.\nMeu número: +258${CU?.phone||''}`;
+  wa(msg);
+  setTimeout(()=>toast('💬 Envie o comprovante no Suporte IA após pagar!'),900);
+}
+
+// ══════════════════════════════════════
+// LOADER
+// ══════════════════════════════════════
+const LM=[[0,30,'A iniciar CashMZ...'],[30,50,'A preparar oportunidades...'],[50,65,'A carregar conteúdos...'],[65,82,'A organizar sistema...'],[82,96,'A finalizar...'],[96,100,'Pronto!']];
+let lPct=0;
+function runLoader(){
+  const br=document.getElementById('lBr'),pc=document.getElementById('lPc'),st=document.getElementById('lSt');
+  const iv=setInterval(()=>{
+    lPct+=Math.random()*2.8+0.7; if(lPct>100)lPct=100;
+    br.style.width=lPct+'%'; pc.textContent=Math.floor(lPct)+'%';
+    for(const[s,e,m] of LM){ if(lPct>=s&&lPct<e){ st.textContent=m; break; } }
+    if(lPct>=100){
+      clearInterval(iv); st.style.display='none';
+      setTimeout(()=>{ document.getElementById('lWl').style.display='block'; setTimeout(()=>{ document.getElementById('lEb').style.display='block'; },700); },300);
+    }
+  },95);
+}
+
+function enterApp(){
+  const l=document.getElementById('L');
+  l.style.opacity='0'; l.style.transition='opacity .5s';
+  setTimeout(()=>{
+    l.style.display='none';
+    // Tentar restaurar sessão
+    const sess=DB.getSess();
+    if(sess){
+      const u=DB.get(sess);
+      if(u&&!u.blocked){ CU={...u,phone:sess}; afterLogin(); return; }
+    }
+    go('LOGIN');
+  },500);
+}
+
+// ══════════════════════════════════════
+// NAVEGAÇÃO
+// ══════════════════════════════════════
+function go(id){
+  const cur=document.querySelector('.scr.on');
+  if(cur&&cur.id!==id) prevS=cur.id;
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  const el=document.getElementById(id); if(el) el.classList.add('on');
+}
+
+function back(){ go(prevS||'HOME'); }
+
+function nav(id,btn){
+  go(id);
+  if(btn){ const nb=btn.closest('.bnav'); if(nb){ nb.querySelectorAll('.ni').forEach(x=>x.classList.remove('on')); btn.classList.add('on'); } }
+}
+
+// ══════════════════════════════════════
+// AUTENTICAÇÃO
+// ══════════════════════════════════════
+function doLogin(){
+  const ph=document.getElementById('lPh').value.trim();
+  const pw=document.getElementById('lPw').value;
+  if(!ph||ph.length<8){ toast('Número inválido'); return; }
+  if(!pw){ toast('Insira a senha'); return; }
+  const u=DB.get(ph);
+  if(!u){ toast('Conta não encontrada. Crie uma conta.'); return; }
+  if(u.blocked){ document.getElementById('blkov').style.display='flex'; return; }
+  if(u.password!==pw){ toast('Senha incorreta'); return; }
+  DB.set(ph,{...u,lastLogin:Date.now()});
+  DB.setSess(ph);
+  DB.addLog({action:'login',phone:n(ph)});
+  CU={...u,phone:n(ph)};
+  afterLogin();
+}
+
+function doReg(){
+  const nm=document.getElementById('rNm').value.trim();
+  const ph=document.getElementById('rPh').value.trim();
+  const pw=document.getElementById('rPw').value;
+  const pw2=document.getElementById('rPw2').value;
+  if(!nm||nm.length<2){ toast('Nome muito curto'); return; }
+  if(!ph||ph.length<8){ toast('Número inválido'); return; }
+  if(!pw||pw.length<6){ toast('Senha: mínimo 6 caracteres'); return; }
+  if(pw!==pw2){ toast('As senhas não coincidem'); return; }
+  if(DB.get(ph)){ toast('Número já registado'); return; }
+  const d={name:nm,password:pw,role:isSuper(ph)?'superadmin':'user',blocked:false,createdAt:Date.now(),lastLogin:Date.now()};
+  DB.set(ph,d);
+  DB.setSess(ph);
+  DB.addLog({action:'register',phone:n(ph),name:nm});
+  CU={...d,phone:n(ph)};
+  toast('Conta criada! ✅');
+  afterLogin();
+}
+
+function afterLogin(){
+  rfProf();
+  go('HOME');
+  const nfs=DB.getNfs(CU.phone);
+  if(nfs.length>0){ document.getElementById('nbdg').style.display='flex'; }
+}
+
+function doLogout(){
+  DB.clrSess(); CU=null; chatH=[];
+  document.getElementById('admMn').style.display='none';
+  go('LOGIN');
+}
+
+function fgPw(){
+  const ph=document.getElementById('lPh').value.trim()||'—';
+  wa(`Olá, esqueci a minha senha do Cash MZ. Número: +258${ph}`);
+}
+
+function rfProf(){
+  if(!CU) return;
+  document.getElementById('pAv').textContent=(CU.name||'U')[0].toUpperCase();
+  document.getElementById('pNm').textContent=CU.name||'Utilizador';
+  document.getElementById('pPh').textContent='+258 '+CU.phone;
+  if(isAdm(CU.phone)) document.getElementById('admMn').style.display='block';
+}
+
+// ══════════════════════════════════════
+// NOTIFS
+// ══════════════════════════════════════
+function chkNf(){
+  if(!CU) return;
+  const nfs=DB.getNfs(CU.phone);
+  if(!nfs.length){ toast('Sem novas notificações'); return; }
+  showNf(nfs[0].title,nfs[0].text);
+  DB.clrNfs(CU.phone);
+  document.getElementById('nbdg').style.display='none';
+}
+function showNf(t,p){ document.getElementById('npT').textContent=t; document.getElementById('npP').textContent=p; const el=document.getElementById('npop'); el.style.display='flex'; setTimeout(cnf,5000); }
+function cnf(){ document.getElementById('npop').style.display='none'; }
+
+// ══════════════════════════════════════
+// CHAT + IA CONTEXTUAL
+// A IA usa o histórico completo para entender contexto.
+// Responde de forma natural, variada e inteligente.
+// ══════════════════════════════════════
+function buildReply(msg){
+  const m = msg.toLowerCase().trim();
+  // Histórico para contexto
+  const last3 = chatH.slice(-6).map(x=>x.c||'').join(' ').toLowerCase();
+
+  // ── COMPROVANTE ──
+  if(/(comprova|paguei|fiz.*pagamento|enviar.*comprova|mandei.*pagamento)/i.test(m))
+    return `Perfeito! 👍 Clica no ícone 📎 aqui em baixo para enviar a imagem do comprovante.<br>Se preferires, podes descrever o pagamento em texto também. Vamos confirmar o mais rápido possível!`;
+
+  // ── CONTEXTO: "onde mando?" após falar de comprar/pagar ──
+  if(/(onde.*mand|para.*onde|número.*pag|como.*mand|conta.*pag|mando.*dinheiro)/i.test(m) ||
+     (/onde/i.test(m) && /(compra|pag|mand)/i.test(last3))){
+    return `Podes pagar por:<br><br>📱 <b>M-Pesa</b><br>Número: <b>841960928</b><br>Nome: Glória Zacarias<br><br>📱 <b>e-Mola</b><br>Número: <b>874436242</b><br>Nome: Chanu IRES<br><br>Após pagar, envia o comprovante aqui no chat. ✅`;
+  }
+
+  // ── PAGAMENTO / MÉTODOS ──
+  if(/(como.*pag|método|mpesa|emola|pagar|forma.*pag)/i.test(m))
+    return `Para adquirir qualquer pack, podes usar:<br><br>📱 <b>M-Pesa:</b> 841960928 — Glória Zacarias<br>📱 <b>e-Mola:</b> 874436242 — Chanu IRES<br><br>Depois de pagar, envia o comprovante aqui e liberamos rapidinho! ✅`;
+
+  // ── CONTEXTO: "sim" / "quero" / "ok" após ver pack ──
+  if(/^(sim|quero|ok|okay|yeah|yep|isso|vamos|claro|pode)$/i.test(m.trim())){
+    // Verificar se falaram de algum pack antes
+    if(/(film|sistema.*film)/i.test(last3))
+      return `Boa escolha! 🎬 Para pagar:<br><br>📱 M-Pesa: <b>841960928</b> (Glória Zacarias)<br>📱 e-Mola: <b>874436242</b> (Chanu IRES)<br><br>Após pagar, envia o comprovante aqui. ✅`;
+    if(/(mega|dados)/i.test(last3))
+      return `Boa escolha! ⚡ Apenas 50MT. Para pagar:<br><br>📱 M-Pesa: <b>841960928</b><br>📱 e-Mola: <b>874436242</b><br><br>Envia o comprovante após pagar. ✅`;
+    return `Ótimo! Para pagar:<br><br>📱 M-Pesa: <b>841960928</b> (Glória Zacarias)<br>📱 e-Mola: <b>874436242</b> (Chanu IRES)<br><br>Qual pack queres adquirir?`;
+  }
+
+  // ── FILMES ──
+  if(/(film|série|movie)/i.test(m)){
+    if(/(completo|sistema|app|tudo|melhor)/i.test(m)||/(pack.*film|film.*complet)/i.test(m))
+      return `O pack <b>"Sistema Completo de Venda de Filmes"</b> (350MT) é o mais completo — inclui guia + app pronto para usar no mesmo dia. 👑<br><br>Se quiseres algo mais acessível, temos o <b>"Vender Filmes"</b> por 100MT.<br><br>Qual preferes?`;
+    return `Temos dois packs de filmes:<br><br>🎬 <b>Vender Filmes</b> — 100MT<br>Aprendes a vender conteúdos pelo celular.<br><br>👑 <b>Sistema Completo de Filmes</b> — 350MT<br>Inclui guia + app pronto. Começas a vender no mesmo dia.<br><br>Qual te interessa?`;
+  }
+
+  // ── MEGAS ──
+  if(/(mega|dados|internet|revend.*dado)/i.test(m))
+    return `O pack <b>"Vender Megas"</b> custa só 50MT! ⚡<br><br>Aprendes a revender dados móveis com +40% de lucro por venda, com tabela de preços e estratégias para captar clientes.<br><br>Queres adquirir?`;
+
+  // ── 1000MT / DINHEIRO ──
+  if(/(1000|mil.*metica|ganha.*dinheiro|dinheiro.*celular|render.*dinheiro)/i.test(m))
+    return `O pack <b>"Fazer 1000MT com Celular"</b> custa 250MT e é o mais vendido! 🔥<br><br>Métodos reais, passo a passo completo e suporte incluído. Perfeito para quem quer começar.<br><br>Queres saber como pagar?`;
+
+  // ── IA / IMAGENS ──
+  if(/(ia|inteligência.*artif|imagem.*ia|ia.*imagem|arte.*digital|vender.*imagem)/i.test(m))
+    return `O pack <b>"Vender Imagens com IA"</b> custa 50MT! 🤖<br><br>Crias imagens com ferramentas gratuitas de IA e vendes online — sem precisar de experiência em design.<br><br>Interessas?`;
+
+  // ── EDIÇÃO ──
+  if(/(edição|editar|vídeo|video|edição.*vídeo)/i.test(m)){
+    if(/(pro|profissional|avançad|cinema)/i.test(m))
+      return `O pack <b>"Edição Profissional de Vídeo"</b> (500MT) ensina técnicas cinematográficas avançadas — color grading, efeitos, transições profissionais. 🎬<br><br>Para iniciantes, temos a <b>Edição Básica</b> por 50MT.<br><br>Qual é o teu nível?`;
+    if(/(vend|negócio|cobrar|client)/i.test(m))
+      return `O pack <b>"Vender Serviços de Edição"</b> (350MT) transforma as tuas habilidades num negócio! 💰<br><br>Aprendes a encontrar clientes, definir preços e construir uma carteira recorrente. Queres?`;
+    return `Temos 3 packs de edição:<br><br>✂️ <b>Edição Básica</b> — 50MT (iniciantes)<br>🎬 <b>Edição Profissional</b> — 500MT (técnicas cinema)<br>💰 <b>Vender Edição</b> — 350MT (negócio)<br><br>Qual combina com o teu nível?`;
+  }
+
+  // ── LISTA DE PACKS / PREÇOS ──
+  if(/(preço|quanto|custo|valor|pack|lista|todos.*pack|ver.*pack|o que.*tem)/i.test(m)){
+    const opts=[
+      `Aqui estão todos os packs do <b>Cash MZ</b>:<br><br>💵 Fazer 1000MT com Celular — <b>250MT</b><br>📶 Vender Megas — <b>50MT</b><br>🎬 Vender Filmes — <b>100MT</b><br>👑 Sistema Completo de Filmes — <b>350MT</b><br>🤖 Imagens com IA — <b>50MT</b><br>✂️ Edição Básica — <b>50MT</b><br>🎥 Edição Pro — <b>500MT</b><br>💰 Vender Edição — <b>350MT</b><br><br>Qual te chama atenção?`,
+      `Estes são os packs disponíveis:<br><br>• Fazer 1000MT com Celular — <b>250MT</b> 🔥<br>• Vender Megas — <b>50MT</b> ⚡<br>• Vender Filmes — <b>100MT</b><br>• Sistema Completo de Filmes — <b>350MT</b> 👑<br>• Imagens com IA — <b>50MT</b><br>• Edição Básica — <b>50MT</b><br>• Edição Pro — <b>500MT</b><br>• Vender Edição — <b>350MT</b><br><br>Precisas de mais detalhes de algum?`
+    ];
+    return opts[chatH.length%2];
+  }
+
+  // ── DRECK BOSS / CRIADOR ──
+  if(/(dreck|criador|quem.*criou|quem.*fez|quem.*é.*o.*dono)/i.test(m))
+    return `<b>Dreck Boss</b> é o criador do Cash MZ. 💡<br>Desenvolveu a plataforma com foco em ajudar jovens moçambicanos a gerar renda real usando apenas o celular — de forma simples e acessível.`;
+
+  // ── SAUDAÇÃO ──
+  if(/(^olá$|^oi$|^ola$|bom dia|boa tarde|boa noite|hey|hello|^e aí|^salve)/i.test(m.trim())){
+    const v=['Olá!','Oi!','Ei, olá!'];
+    return `${v[chatH.length%3]} 👋 Bem-vindo ao suporte do <b>Cash MZ</b>.<br>Posso ajudar-te com packs, pagamentos e formas de gerar renda. O que precisas?`;
+  }
+
+  // ── AGRADECIMENTO ──
+  if(/(obrigad|valeu|agradeç|vlw|fixe|top|boa)/i.test(m))
+    return `Disponha! 😊 Se precisares de mais alguma coisa, é só dizer. Boa sorte com os teus negócios!`;
+
+  // ── COMO FUNCIONA ──
+  if(/(como.*funciona|o que.*é|me.*explica|conta.*mais|como.*começ)/i.test(m))
+    return `O <b>Cash MZ</b> é uma plataforma que ensina formas reais de ganhar dinheiro com o celular. 📱<br><br>O fluxo é simples:<br>1️⃣ Escolhes um pack<br>2️⃣ Pagas via M-Pesa ou e-Mola<br>3️⃣ Envias o comprovante aqui<br>4️⃣ Recebes o acesso ao conteúdo<br><br>Quer ver os packs disponíveis?`;
+
+  // ── ADMIN (não revelar detalhes) ──
+  if(/(admin|administr|painel)/i.test(m))
+    return `O acesso administrativo do Cash MZ é controlado internamente para garantir segurança a todos os utilizadores.`;
+
+  // ── FORA DO CONTEXTO — variado e nunca repetitivo ──
+  const oc=[
+    `Hmm, essa pergunta está fora do meu foco. Mas posso ajudar-te com tudo sobre o Cash MZ — packs, pagamentos, como começar. O que precisas? 😊`,
+    `Não tenho resposta para isso aqui, mas posso ajudar-te a escolher um pack ou explicar como funciona o Cash MZ. Tens interesse?`,
+    `Aqui cuido de assuntos do Cash MZ. Se tens dúvidas sobre packs, pagamento ou como gerar renda — é só perguntar!`,
+    `Essa vai além do meu foco, mas se tiveres perguntas sobre os packs do Cash MZ ou sobre como pagar, estou aqui!`
+  ];
+  return oc[Math.floor(Math.random()*4)];
+}
+
+async function sChat(){
+  const inp=document.getElementById('cin');
+  const msg=inp.value.trim();
+  if(!msg&&!pFile) return;
+  inp.value=''; inp.style.height='auto';
+  const box=document.getElementById('cmsg');
+
+  if(msg) box.innerHTML+=`<div class="bbl u fi">${esc(msg)}</div>`;
+
+  // Ficheiro/comprovante
+  if(pFile&&pFileURL){
+    box.innerHTML+=`<div class="bbl u fi" style="padding:5px"><img src="${pFileURL}" style="max-width:185px;border-radius:9px;display:block"></div>`;
+    clrRec();
+    const p=PACKS[curPk]||{};
+    const r={id:'r'+Date.now(),phone:CU?.phone,userName:CU?.name||'?',packName:p.ti||'N/A',packPrice:p.pr||0,message:msg||'Comprovante enviado',status:'pending',ts:Date.now()};
+    DB.addRec(r);
+    DB.addNf(SUPER,{title:'📩 Novo comprovante!',text:`${CU?.name} enviou comprovante para "${p.ti||'N/A'}"`,ts:Date.now()});
+    DB.addLog({action:'receipt_submitted',phone:CU?.phone,packName:p.ti});
+    chatH.push({r:'u',c:'[enviou comprovante de pagamento]'});
+    box.scrollTop=box.scrollHeight;
+    const tid='ty'+Date.now();
+    box.innerHTML+=`<div class="bbl a ty" id="${tid}"><div class="d"></div><div class="d"></div><div class="d"></div></div>`;
+    box.scrollTop=box.scrollHeight;
+    await sleep(1300);
+    document.getElementById(tid)?.remove();
+    const rep=`Comprovante recebido! ✅<br><br>A nossa equipa vai analisar e confirmar o pagamento em breve.<br>Assim que aprovado, o teu acesso é liberado automaticamente. 🚀<br><br>Se tiveres dúvidas, é só perguntar!`;
+    chatH.push({r:'a',c:rep});
+    box.innerHTML+=`<div class="bbl a fi">${rep}</div>`;
+    box.scrollTop=box.scrollHeight;
+    return;
+  }
+
+  if(!msg) return;
+  chatH.push({r:'u',c:msg});
+  if(chatH.length>24) chatH=chatH.slice(-24);
+
+  const tid='ty'+Date.now();
+  box.innerHTML+=`<div class="bbl a ty" id="${tid}"><div class="d"></div><div class="d"></div><div class="d"></div></div>`;
+  box.scrollTop=box.scrollHeight;
+  // tempo de resposta natural (varia com tamanho da mensagem)
+  await sleep(600+Math.min(msg.length*8,900));
+  document.getElementById(tid)?.remove();
+  const rep=buildReply(msg);
+  chatH.push({r:'a',c:rep});
+  box.innerHTML+=`<div class="bbl a fi">${rep}</div>`;
+  box.scrollTop=box.scrollHeight;
+}
+
+function hFile(inp){
+  const f=inp.files[0]; if(!f) return;
+  pFile=f; pFileURL=URL.createObjectURL(f);
+  document.getElementById('rfn').textContent=f.name;
+  document.getElementById('rth').src=pFileURL;
+  document.getElementById('rpv').style.display='flex';
+  inp.value='';
+}
+
+function clrRec(){
+  pFile=null; pFileURL=null;
+  document.getElementById('rpv').style.display='none';
+}
+
+// ══════════════════════════════════════
+// ADMIN
+// ══════════════════════════════════════
+function openAdm(){
+  if(!isAdm(CU?.phone)){ toast('Acesso negado'); return; }
+  document.getElementById('aBdg').textContent=isSuper(CU.phone)?'🔴 SUPER ADMIN':'🟡 ADMINISTRADOR';
+  document.getElementById('aBlkW').style.display=isSuper(CU.phone)?'block':'none';
+  document.getElementById('aLgW').style.display=isSuper(CU.phone)?'block':'none';
+  rfAdm();
+  go('ADM');
+}
+
+function rfAdm(){
+  const users=DB.getAll();
+  const all=Object.entries(users).map(([p,u])=>({...u,phone:p}));
+  const recs=DB.getRecs();
+  document.getElementById('sU').textContent=all.length;
+  document.getElementById('sA').textContent=all.filter(u=>isAdm(u.phone)).length;
+  document.getElementById('sB').textContent=all.filter(u=>u.blocked).length;
+  document.getElementById('sR').textContent=recs.length;
+
+  // comprovantes
+  document.getElementById('aRl').innerHTML=recs.length?recs.map(r=>`
+    <div class="rr">
+      <div class="rrt">
+        <div>
+          <div style="font-size:12px;font-weight:700">${esc(r.userName)} — ${esc(r.packName)}</div>
+          <div style="font-size:10px;color:var(--t2)">+258${esc(r.phone||'')} · ${new Date(r.ts).toLocaleDateString('pt')}</div>
+          ${r.message?`<div style="font-size:11px;color:#ccc;margin-top:2px">"${esc(r.message)}"</div>`:''}
+        </div>
+        <div class="rst ${r.status==='approved'?'rsa':r.status==='rejected'?'rsr':'rsp'}">${r.status==='approved'?'✅ Aprovado':r.status==='rejected'?'❌ Rejeitado':'⏳ Pendente'}</div>
+      </div>
+      ${r.status==='pending'?`<div class="rac"><button class="rappr" onclick="aprR('${r.id}',true)">✓ Aprovar</button><button class="rrej" onclick="aprR('${r.id}',false)">✗ Rejeitar</button></div>`:''}</div>`).join('')
+  :'<div style="padding:13px;text-align:center;font-size:12px;color:var(--t2)">Nenhum comprovante</div>';
+
+  // utilizadores
+  document.getElementById('aUl').innerHTML=all.length?all.map(u=>`
+    <div class="ur">
+      <div class="uav">${(u.name||'U')[0].toUpperCase()}</div>
+      <div class="uif">
+        <h4>${esc(u.name||'?')} ${isAdm(u.phone)?'<span style="color:var(--gold);font-size:9px">ADM</span>':''} ${u.blocked?'<span style="color:var(--red);font-size:9px">BLOQ</span>':''}</h4>
+        <p>+258${esc(u.phone)}</p>
+      </div>
+      <div class="uac">
+        ${!isSuper(u.phone)?`<button class="ub ublk" onclick="qBlk('${u.phone}')">${u.blocked?'Desbloquear':'Bloquear'}</button>`:''}
+        ${!isAdm(u.phone)?`<button class="ub upro" onclick="qPro('${u.phone}')">ADM</button>`:''}
+      </div>
+    </div>`).join('')
+  :'<div style="padding:13px;text-align:center;font-size:12px;color:var(--t2)">Nenhum utilizador</div>';
+
+  // log
+  const log=DB.getLog();
+  document.getElementById('aLg').innerHTML=log.length?log.slice(0,20).map(l=>`
+    <div style="padding:9px 13px;border-bottom:1px solid rgba(255,255,255,.04)">
+      <div style="font-size:11px;font-weight:700;color:var(--g)">${esc(l.action)}</div>
+      <div style="font-size:10px;color:var(--t2)">${new Date(l.ts).toLocaleString('pt')} · ${esc(l.phone||l.by||'')}</div>
+    </div>`).join('')
+  :'<div style="padding:13px;text-align:center;font-size:12px;color:var(--t2)">Sem ações</div>';
+}
+
+function doProm(){
+  const ph=document.getElementById('promN').value.trim();
+  if(!ph){ toast('Insira o número'); return; }
+  const u=DB.get(ph); if(!u){ toast('Utilizador não encontrado'); return; }
+  if(isSuper(ph)){ toast('Não pode alterar o Super Admin'); return; }
+  DB.set(ph,{...u,role:'admin'});
+  DB.addLog({action:'promote',by:CU?.phone,target:n(ph)});
+  document.getElementById('promN').value='';
+  toast('Promovido a ADM! ✅'); rfAdm();
+}
+
+function doBlk(blk){
+  const ph=document.getElementById('blkN').value.trim();
+  if(!ph){ toast('Insira o número'); return; }
+  if(isSuper(ph)){ toast('Não pode bloquear o Super Admin'); return; }
+  const u=DB.get(ph); if(!u){ toast('Utilizador não encontrado'); return; }
+  DB.set(ph,{...u,blocked:blk});
+  DB.addLog({action:blk?'block':'unblock',by:CU?.phone,target:n(ph)});
+  document.getElementById('blkN').value='';
+  toast(blk?'Bloqueado! 🚫':'Desbloqueado! ✅'); rfAdm();
+}
+
+function qBlk(ph){ const u=DB.get(ph); if(!u||isSuper(ph)) return; DB.set(ph,{...u,blocked:!u.blocked}); DB.addLog({action:u.blocked?'unblock':'block',by:CU?.phone,target:ph}); rfAdm(); }
+function qPro(ph){ const u=DB.get(ph); if(!u) return; DB.set(ph,{...u,role:'admin'}); DB.addLog({action:'promote',by:CU?.phone,target:ph}); rfAdm(); }
+
+function aprR(id,approve){
+  DB.updRec(id,{status:approve?'approved':'rejected'});
+  const r=DB.getRecs().find(x=>x.id===id);
+  if(r) DB.addNf(r.phone,{title:approve?'✅ Pagamento aprovado!':'❌ Comprovante rejeitado',text:approve?`Acesso ao "${r.packName}" foi liberado!`:`Comprovante de "${r.packName}" rejeitado. Envie o correto.`,ts:Date.now()});
+  DB.addLog({action:approve?'approve':'reject',by:CU?.phone,receiptId:id});
+  toast(approve?'Aprovado! ✅':'Rejeitado.'); rfAdm();
+}
+
+function doMsg(){
+  const tp=document.getElementById('msgTp').value;
+  const tx=document.getElementById('msgTx').value.trim();
+  if(!tx){ toast('Escreva a mensagem'); return; }
+  if(tp==='g'){
+    Object.keys(DB.getAll()).forEach(p=>DB.addNf(p,{title:'📢 Cash MZ',text:tx,ts:Date.now()}));
+    toast('Global enviada! 📢');
+  } else {
+    const tg=document.getElementById('msgTg').value.trim();
+    if(!tg){ toast('Insira o número'); return; }
+    DB.addNf(tg,{title:'📩 Cash MZ',text:tx,ts:Date.now()});
+    toast('Mensagem enviada! 📩');
+  }
+  DB.addLog({action:'send_msg',by:CU?.phone,type:tp,txt:tx.slice(0,50)});
+  document.getElementById('msgTx').value='';
+}
+
+// ══════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════
+function wa(msg){
+  const url=`https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`;
+  // APK WebView detection
+  const ua=navigator.userAgent||'';
+  if(/android/i.test(ua)&&window.cordova){ window.open(url,'_system'); }
+  else { window.open(url,'_blank'); }
+}
+
+function toast(m){
+  const t=document.getElementById('toast');
+  t.textContent=m; t.style.display='block';
+  setTimeout(()=>t.style.display='none',2700);
+}
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+renderPacks();
+runLoader();
+</script>
+</body>
+</html>
